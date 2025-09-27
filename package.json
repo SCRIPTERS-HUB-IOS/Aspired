@@ -1,8 +1,8 @@
 {
-  "name": "discord-bot",
+  "name": "discord-render-bot",
   "version": "1.0.0",
+  "description": "A Discord slash command bot deployed on Render",
   "main": "index.js",
-  "license": "MIT",
   "scripts": {
     "start": "node index.js"
   },
