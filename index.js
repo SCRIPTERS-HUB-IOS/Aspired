@@ -1,27 +1,29 @@
 // index.js
+const express = require('express');
 const { 
   Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder 
 } = require('discord.js');
 require('dotenv').config();
 
-// ENV VARIABLES (set these in Railway)
-// TOKEN = your bot token
-// CLIENT_ID = your bot client ID
-// GUILD_ID = your server ID (for dev/testing)
+// --- Keep Alive Web Server ---
+const app = express();
+app.get('/', (req, res) => res.send('🚀 Bot is running on Render.'));
+app.listen(3000, () => console.log('🌐 Render keep-alive server started.'));
 
+// --- Discord Client ---
 const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
-// Register Slash Commands
+// --- Slash Commands ---
 const commands = [
   new SlashCommandBuilder()
     .setName('ping')
     .setDescription('Replies with Pong!'),
 
   new SlashCommandBuilder()
-    .setName('railway')
-    .setDescription('Check Railway bot status')
+    .setName('render')
+    .setDescription('Check if bot is running on Render')
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
@@ -42,9 +44,9 @@ const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
   }
 })();
 
-// Bot Events
+// --- Bot Events ---
 client.once('ready', () => {
-  console.log(`🚀 Logged in as ${client.user.tag}`);
+  console.log(`🤖 Logged in as ${client.user.tag}`);
 });
 
 client.on('interactionCreate', async (interaction) => {
@@ -54,8 +56,8 @@ client.on('interactionCreate', async (interaction) => {
     await interaction.reply('🏓 Pong!');
   }
 
-  if (interaction.commandName === 'railway') {
-    await interaction.reply('🚂 Railway bot is online and running!');
+  if (interaction.commandName === 'render') {
+    await interaction.reply('🌐 Bot is alive and running on Render!');
   }
 });
 
